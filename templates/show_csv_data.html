@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href='/staticFiles/main.css' />
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+    </script></head>
+  <body>
+    <div id = "wrapper">
+    <h1>CSV File Display</h1>
+    <p>Display csv file and its features</p>
+    {{ data_var|safe }}
+  </div>
+    </body>
+    <script>
+	var tblHeadObj = document.getElementById("hello").tHead;
+	for (var h=0; h<tblHeadObj.rows.length; h++) {
+		var newTH = document.createElement('th');
+		tblHeadObj.rows[h].appendChild(newTH);
+		newTH.innerHTML = "Numeric Data Chart With Box Plot and Histogram"
+	}
+  var tblBodyObj = document.getElementById("hello").tBodies[0];
+	for (var i=0; i<tblBodyObj.rows.length; i++) {
+		var newCell = tblBodyObj.rows[i].insertCell(-1);
+    var img = document.createElement("img");
+    newCell.appendChild(img);
+	}
+	var tblHeadObj = document.getElementById("hello").tHead;
+	for (var h=0; h<tblHeadObj.rows.length; h++) {
+		var newTH = document.createElement('th');
+		tblHeadObj.rows[h].appendChild(newTH);
+		newTH.innerHTML = "Frequency Where Variance Is Less Than 12"
+	}
+  var tblBodyObj = document.getElementById("hello").tBodies[0];
+	for (var i=0; i<tblBodyObj.rows.length; i++) {
+		var newCell = tblBodyObj.rows[i].insertCell(-1);
+    var img = document.createElement("img");
+    newCell.appendChild(img);
+	}
+
+const table = document.getElementById("hello");
+const numers = [];
+for (let i = 1; i < document.getElementById("hello").rows.length; i++) {
+  if(table.rows[i].cells[1].innerHTML == "int64" || table.rows[i].cells[1].innerHTML == "float64"){
+    numers.push(i)
+  }
+}
+
+{% set var = namespace (newtotal = 0) %}
+
+{% for dataTable in listOfTables %}
+
+
+table.rows[numers[{{var.newtotal}}]].cells[4].innerHTML = `{{ dataTable | safe}}`;  
+ 
+{% set var.newtotal = var.newtotal + 1 %}
+
+{% endfor %}
+/*
+for (let i = 1; i < document.getElementById("hello").rows.length; i++) {
+  if(table.rows[i].cells[1].innerHTML == "String" && table.rows[i].cells[3].innerHTML < 12){
+    var img = document.createElement("img");
+    img.src = "staticFiles/images/" + (document.getElementById("hello").rows[i].cells)[0].innerHTML + ".png";
+    table.rows[i].cells[5].appendChild(img);
+  }
+}
+*/
+
+for (let i = 1; i < document.getElementById("hello").rows.length; i++) {
+  if(table.rows[i].cells[1].innerHTML == "int64" || table.rows[i].cells[1].innerHTML == "float64"){
+    var img = document.createElement("img");
+    img.src = "staticFiles/images/" + (document.getElementById("hello").rows[i].cells)[0].innerHTML + ".png";
+    table.rows[i].cells[4].appendChild(img);
+  }
+}
+
+</script>
+
+
+
+
+
+<script>
+var helper = 100;
+var parser = 0;
+let listInds = {{listInds | safe}};
+let listVals = {{listVals | safe}};
+for (let i = 1; i < document.getElementById("hello").rows.length; i++) {
+  if(table.rows[i].cells[1].innerHTML == "String" && table.rows[i].cells[3].innerHTML < 12){
+    var canv = document.createElement("canvas");
+    canv.id = helper
+    canv.width = 600;
+    table.rows[i].cells[5].appendChild(canv);
+    
+
+    new Chart(document.getElementById(helper), {
+        type: 'horizontalBar',
+    data: {
+      labels: listInds[parser],
+      datasets: [
+        {
+          backgroundColor: "rgba(153,173,208,0.2)",
+          borderColor: "rgba(153,173,208,1)",
+          borderWidth: 2,
+          hoverBackgroundColor: "rgba(153,173,208,0.4)",
+          hoverBorderColor: "rgba(153,173,208,1)",
+          data: listVals[parser]
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      title: {display: false}
+    }
+});
+    parser = parser + 1;
+
+helper = helper + 1;
+}
+}
+</script>
+
+</html>
