@@ -1,2 +1,2 @@
-# Csv_Data-_Evaluation_Tool
+# Csv🇹🇷Data🇹🇷Evaluation🇹🇷Tool
 Data evaluation tool to analyze csv files producing univariate frequency and showing outliers. 
